@@ -17,8 +17,8 @@ NAME=strap-v2
 ISO_FILE=out/$(NAME).iso
 ISO_DIR =iso_root
 
-CXXFLAGS=--std=c++17 -Werror=return-type -fno-threadsafe-statics -Ilib -Iinc -nostdlib -fno-use-cxa-atexit -ffreestanding -Wall -Wextra -fno-exceptions -fno-rtti
-CFLAGS=--std=c17 -Werror=implicit-function-declaration -Werror=return-type -Ilib -Iinc -nostdlib -ffreestanding -Wall -Wextra -fno-exceptions
+CXXFLAGS=--std=c++17 '-D KERN_NAME="$(NAME)"' -Werror=return-type -fno-threadsafe-statics -Ilib -Iinc -nostdlib -fno-use-cxa-atexit -ffreestanding -Wall -Wextra -fno-exceptions -fno-rtti
+CFLAGS=--std=c17 '-D KERN_NAME="$(NAME)"' -Werror=implicit-function-declaration -Werror=return-type -Ilib -Iinc -nostdlib -ffreestanding -Wall -Wextra -fno-exceptions
 NASMFLAGS=-felf32
 ASFLAGS=--32 -nostdlib
 

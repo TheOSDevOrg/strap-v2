@@ -59,6 +59,7 @@ void __STRAPV2_INTERNAL_backspace(standard_output *std)
 {
   if (std->x == 0)
   {
+    if (std->y == 0) return;
     std->y--;
     for (; std->x < std->max_x; std->x++)
       if (std->framebuffer[__STRAPV2_INTERNAL_get_offset(
@@ -82,7 +83,7 @@ void __STRAPV2_INTERNAL_backspace(standard_output *std)
 }
 void __STRAPV2_INTERNAL_tab(standard_output *std)
 {
-
+  std;
 }
 
 void __STRAPV2_INTERNAL_parse_special_char(
@@ -148,53 +149,72 @@ void __STRAPV2_putc_std(standard_output *std, char c)
 void __STRAPV2_putc(char c)
 { __STRAPV2_putc_std(current_std, c); }
 
-void __STRAPV2_clear_std(standard_output *std);
-/**
- * @brief clear the current std
-*/
-void __STRAPV2_clear();
+void __STRAPV2_clear_std(standard_output *std)
+{
+  console_char_t dummy = {
+    .attrib = {
+      .fg = std->fg,
+      .bg = std->bg
+    },
+    .data = '\0'
+  };
 
-/**
- * @brief clear a specific std with some foreground color
- * @param std the std to clear
- * @param fg the foreground color to apply
-*/
-void __STRAPV2_clear_fg_std(standard_output *std, console_color_t fg);
-/**
- * @brief clear the current std with some foreground color
- * @param fg the foreground color to apply
-*/
-void __STRAPV2_clear_fg(console_color_t fg);
+  memsetw(
+    (uint16_t *)std->framebuffer,
+    *(uint16_t*)&dummy,
+    std->max_x * std->max_y
+  );
+}
+void __STRAPV2_clear() { __STRAPV2_clear_std(current_std); }
 
-/**
- * @brief clear a specific std with some background color
- * @param std the std to clear
- * @param bg the background color to apply
-*/
-void __STRAPV2_clear_bg_std(standard_output *std, console_color_t bg);
-/**
- * @brief clear the current std with some background color
- * @param bg the background color to apply
-*/
-void __STRAPV2_clear_bg(console_color_t bg);
+void __STRAPV2_clear_fg_std(
+  standard_output *std,
+  console_color_t fg
+)
+{
+  std->fg = fg;
+  __STRAPV2_clear_std(std);
+}
+void __STRAPV2_clear_fg(console_color_t fg)
+{
+  current_std->fg = fg;
+  __STRAPV2_clear();
+}
 
-/**
- * @brief clear a specific std with some background and foreground colors
- * @param std the std to clear
- * @param fg the foreground color to apply
- * @param bg the background color to apply
-*/
-void __STRAPV2_clear_colors_std(standard_output *std, console_color_t fg, console_color_t bg);
-/**
- * @brief clear the current std with some background and foreground colors
- * @param fg the foreground color to apply
- * @param bg the background color to apply
-*/
-void __STRAPV2_clear_colors(console_color_t fg, console_color_t bg);
+void __STRAPV2_clear_bg_std(
+  standard_output *std,
+  console_color_t bg
+)
+{
+  std->bg = bg;
+  __STRAPV2_clear_std(std);
+}
+void __STRAPV2_clear_bg(console_color_t bg)
+{
+  current_std->bg = bg;
+  __STRAPV2_clear();
+}
 
-/**
- * @brief render the current std
-*/
+void __STRAPV2_clear_colors_std(
+  standard_output *std,
+  console_color_t fg,
+  console_color_t bg
+)
+{
+  std->fg = fg;
+  std->bg = bg;
+  __STRAPV2_clear_std(std);
+}
+void __STRAPV2_clear_colors(
+  console_color_t fg,
+  console_color_t bg
+)
+{
+  current_std->fg = fg;
+  current_std->bg = bg;
+  __STRAPV2_clear_std(current_std);
+}
+
 void __STRAPV2_render()
 {
   memcpy(

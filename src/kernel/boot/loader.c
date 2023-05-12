@@ -39,11 +39,11 @@ __STRAPV2_memory_regions_t __STRAPV2_MEMORY_REGIONS;
 
 void _start()
 {
-  asm volatile ("cli");
+  __asm__ volatile ("cli");
 
   // copy the multiboot response header
   // before the register is corrupted
-  asm volatile (
+  __asm__ volatile (
     "mov %%ebx, %0"
     : "=m"(multiboot_response)
   );
@@ -64,11 +64,9 @@ void _start()
   __STRAPV2_MEMORY_REGIONS.end =
   (uint8_t *)__STRAPV2_MEMORY_REGIONS.common_heap +
                STRAPV2_COMMON_HEAP_SZ;
-  
-  int response = 0;
 
   __STRAPV2_kernel_prerun(multiboot_response);
-  while (response == 0) response = __STRAPV2_kernel_run();
+  while (__STRAPV2_kernel_run() == 0) ;
 
-  asm volatile ("hlt");
+  __asm__ volatile ("hlt");
 }
