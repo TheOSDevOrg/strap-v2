@@ -1,8 +1,23 @@
 #include <out.h>
 #include <stddef.h>
 #include <memory.h>
+#include <hal/ports.h>
 
 standard_output *current_std = NULL;
+__STAPV2_port_t __STRAPV2_INTERNAL_out_cmd_port = (__STAPV2_port_t) {
+  .address = 0x3D4,
+  .flags = {
+    .write = true
+  },
+  .unit = STRAPV2_PORT_BYTE
+};
+__STAPV2_port_t __STRAPV2_INTERNAL_out_dat_port = (__STAPV2_port_t) {
+  .address = 0x3D5,
+  .flags = {
+    .write = true
+  },
+  .unit = STRAPV2_PORT_BYTE
+};
 
 int __STRAPV2_INTERNAL_get_std_ind(standard_output *std)
 {
@@ -217,9 +232,59 @@ void __STRAPV2_clear_colors(
 
 void __STRAPV2_render()
 {
+  uint16_t offset = current_std->x + (current_std->y*current_std->max_x);
+
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_cmd_port,
+    0x0f
+  );
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_dat_port,
+    offset & 0xFF
+  );
+
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_cmd_port,
+    0x0e
+  );
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_dat_port,
+    (offset >> 8) & 0xFF
+  );
+
   memcpy(
     (void *)0xb8000,
     current_std->framebuffer,
     (current_std->max_x * current_std->max_y)*2
+  );
+}
+
+void __STRAPV2_init_output_system()
+{
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_cmd_port,
+    0x09
+  );
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_dat_port,
+    0x0f
+  );
+
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_cmd_port,
+    0x0b
+  );
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_dat_port,
+    0x0f
+  );
+
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_cmd_port,
+    0x0a
+  );
+  __STRAPV2_port_write(
+    __STRAPV2_INTERNAL_out_dat_port,
+    0x0e
   );
 }

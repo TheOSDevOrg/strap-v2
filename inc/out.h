@@ -140,3 +140,7 @@ void __STRAPV2_clear_colors(console_color_t fg, console_color_t bg);
 */
 void __STRAPV2_render();
 
+/**
+ * @brief initialize the output system
+*/
+void __STRAPV2_init_output_system();

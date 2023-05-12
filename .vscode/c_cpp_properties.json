@@ -2,16 +2,20 @@
     "configurations": [
         {
             "name": "Mac",
-            "includePath": [
-                "${workspaceFolder}/lib",
-                "${workspaceFolder}/inc"
+            "defines": [
+                "KERN_NAME=\"NAME\""
             ],
-            "defines": ["KERN_NAME=\"NAME\""],
             "compilerPath": "/opt/homebrew/bin/i686-elf-gcc",
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "gcc-x86",
-            "configurationProvider": "ms-vscode.makefile-tools"
+            "configurationProvider": "ms-vscode.makefile-tools",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/lib",
+                    "${workspaceFolder}/inc"
+                ]
+            }
         }
     ],
     "version": 4
