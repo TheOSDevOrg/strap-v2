@@ -96,9 +96,8 @@ void __STRAPV2_INTERNAL_backspace(standard_output *std)
     std->max_x
   )] = c;
 }
-void __STRAPV2_INTERNAL_tab(standard_output *std)
+void __STRAPV2_INTERNAL_tab(standard_output *)
 {
-  std;
 }
 
 void __STRAPV2_INTERNAL_parse_special_char(
@@ -179,6 +178,8 @@ void __STRAPV2_clear_std(standard_output *std)
     *(uint16_t*)&dummy,
     std->max_x * std->max_y
   );
+
+  std->x = 0, std->y = 0;
 }
 void __STRAPV2_clear() { __STRAPV2_clear_std(current_std); }
 
