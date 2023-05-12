@@ -13,12 +13,16 @@ NASM=nasm
 AS=i686-elf-as
 
 NAME=strap-v2
+VER	=0.130523.1
+COMMIT=$(shell git rev-parse HEAD)
 
 ISO_FILE=out/$(NAME).iso
 ISO_DIR =iso_root
 
-CXXFLAGS=--std=c++17 '-D KERN_NAME="$(NAME)"' -Werror=return-type -fno-threadsafe-statics -Ilib -Iinc -nostdlib -fno-use-cxa-atexit -ffreestanding -Wall -Wextra -fno-exceptions -fno-rtti
-CFLAGS=--std=c17 '-D KERN_NAME="$(NAME)"' -Werror=implicit-function-declaration -Werror=return-type -Ilib -Iinc -nostdlib -ffreestanding -Wall -Wextra -fno-exceptions
+DEFINITIONS='-D KERN_NAME="$(NAME)"' '-D KERN_VER="$(VER)"' '-D KERN_COMMIT_ID="$(COMMIT)"'
+
+CXXFLAGS=--std=c++17 $(DEFINITIONS) -Werror=return-type -fno-threadsafe-statics -Ilib -Iinc -nostdlib -fno-use-cxa-atexit -ffreestanding -Wall -Wextra -fno-exceptions -fno-rtti
+CFLAGS=--std=c17 $(DEFINITIONS) -Werror=implicit-function-declaration -Werror=return-type -Ilib -Iinc -nostdlib -ffreestanding -Wall -Wextra -fno-exceptions
 NASMFLAGS=-felf32
 ASFLAGS=--32 -nostdlib
 

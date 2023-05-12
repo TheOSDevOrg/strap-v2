@@ -23,7 +23,8 @@ void __STRAPV2_kernel_prerun(multiboot_hdr *multiboot)
 }
 int __STRAPV2_kernel_run()
 {
-  __STRAPV2_print("Welcome to " KERN_NAME "\n");
+  __STRAPV2_print("Welcome to " KERN_NAME " " KERN_VER "\n");
+  __STRAPV2_print("From commit " KERN_COMMIT_ID "\n");
   __STRAPV2_print("sample_prompt strap ? ");
   __STRAPV2_render();
   while(1) ;
