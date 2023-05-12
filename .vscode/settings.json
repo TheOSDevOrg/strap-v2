@@ -3,6 +3,7 @@
     "stddef.h": "c",
     "loader.h": "c",
     "decl.h": "c",
-    "limine.h": "c"
+    "limine.h": "c",
+    "out.h": "c"
   }
 }

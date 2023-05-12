@@ -36,7 +36,6 @@ void memsetb(uint8_t *dst, uint8_t data, size_t sz)
 
 void memcpy(void *dst, void *src, size_t sz)
 {
-  int i;
   int s, k;
 
   s = sz / 4;
@@ -55,7 +54,6 @@ void memcpy(void *dst, void *src, size_t sz)
 }
 void memset(void *dst, int data, size_t sz)
 {
-  int i;
   int s, k;
 
   s = sz / 4;
