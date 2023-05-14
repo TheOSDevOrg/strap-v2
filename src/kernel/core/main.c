@@ -1,5 +1,6 @@
 #include <main.h>
 #include <out.h>
+#include <stdio.h>
 
 console_char_t _videobuffer[80*25];
 standard_output _stdout = {
@@ -25,7 +26,15 @@ int __STRAPV2_kernel_run()
 {
   __STRAPV2_print("Welcome to " KERN_NAME " " KERN_VER "\n");
   __STRAPV2_print("From commit " KERN_COMMIT_ID "\n");
-  __STRAPV2_print("sample_prompt strap ? ");
+  //__STRAPV2_print("sample_prompt strap ? \n");
+
+  printf("%d\n", 10);
+  printf("%d\n", -10);
+  printf("%x\n", 0x0a);
+  printf("%x\n", -0x0a);
+  printf("0x%uX\n", 0xdeadbeef);
+  printf("0x%%test%%\n");
+
   __STRAPV2_render();
   while(1) ;
   return 0;

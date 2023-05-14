@@ -15,7 +15,10 @@
                     "${workspaceFolder}/lib",
                     "${workspaceFolder}/inc"
                 ]
-            }
+            },
+            "includePath": [
+                "${default}"
+            ]
         }
     ],
     "version": 4
