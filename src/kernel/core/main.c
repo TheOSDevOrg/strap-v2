@@ -1,6 +1,7 @@
 #include <main.h>
 #include <out.h>
 #include <stdio.h>
+#include <hal/gdt.h>
 
 console_char_t _videobuffer[80*25];
 standard_output _stdout = {
@@ -21,6 +22,7 @@ void __STRAPV2_kernel_prerun(multiboot_hdr *multiboot)
   __STRAPV2_print("info:  output system ready!\n");
   __STRAPV2_mboot_init(multiboot);
   __STRAPV2_print("info:  multiboot data ready!\n");
+  __STRAPV2_kernel_run();
 }
 int __STRAPV2_kernel_run()
 {
