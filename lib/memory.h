@@ -14,3 +14,6 @@ void memsetb(uint8_t *dst, uint8_t data, size_t sz);
 
 void memcpy(void *dst, void *src, size_t sz);
 void memset(void *dst, int data, size_t sz);
+
+uint64_t __STRAPV2_get_installed_mem_size();
+uint32_t __STRAPV2_get_usable_mem_size();

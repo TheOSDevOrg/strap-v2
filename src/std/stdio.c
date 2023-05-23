@@ -28,12 +28,12 @@ int __STRAPV2_INTERNAL_print_number(
 
   nsz = numbersz(number, base);
   if (nsz == 0) return 0;
-  factor = pow(base, nsz - 1);
+  factor = (int)pow(base, nsz - 1);
 
   for (; ; factor /= base)
   {
     int digit = 0;
-    while (number >= factor)
+    while ((uint32_t)number >= factor)
     {
       digit++;
       number -= factor;
@@ -61,7 +61,7 @@ int __STRAPV2_INTERNAL_print_unsigned_number(
   for (; ; factor /= base)
   {
     int digit = 0;
-    while (number >= factor)
+    while ((uint32_t)number >= factor)
     {
       digit++;
       number -= factor;
@@ -92,8 +92,6 @@ int vprintf_std(va_list lst, standard_output *std, char *fmt, ...)
     { __STRAPV2_putc(fmt[c]); tot++; continue; }
 
     int num;
-    char *str;
-    char chr;
 
     switch (fmt[++c])
     {

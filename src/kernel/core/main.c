@@ -2,6 +2,7 @@
 #include <out.h>
 #include <stdio.h>
 #include <hal/gdt.h>
+#include <memory.h>
 
 console_char_t _videobuffer[80*25];
 standard_output _stdout = {
@@ -20,22 +21,21 @@ void __STRAPV2_kernel_prerun(multiboot_hdr *multiboot)
   __STRAPV2_switch_std(&_stdout);
   __STRAPV2_clear();
   __STRAPV2_print("info:  output system ready!\n");
-  __STRAPV2_mboot_init(multiboot);
   __STRAPV2_print("info:  multiboot data ready!\n");
-  __STRAPV2_kernel_run();
 }
 int __STRAPV2_kernel_run()
 {
+  uint32_t installed = __STRAPV2_get_installed_mem_size() / 1024 / 1024;
+  uint32_t usable = __STRAPV2_get_usable_mem_size() / 1024 / 1024;
+
   __STRAPV2_print("Welcome to " KERN_NAME " " KERN_VER "\n");
   __STRAPV2_print("From commit " KERN_COMMIT_ID "\n");
+  printf(
+    "Installed memory: %ud MB (usable %ud MB)\n",
+    installed,
+    usable
+  );
   //__STRAPV2_print("sample_prompt strap ? \n");
-
-  printf("%d\n", 10);
-  printf("%d\n", -10);
-  printf("%x\n", 0x0a);
-  printf("%x\n", -0x0a);
-  printf("0x%uX\n", 0xdeadbeef);
-  printf("0x%%test%%\n");
 
   __STRAPV2_render();
   while(1) ;

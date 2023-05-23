@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <multiboot.h>
 
 void memcpyd(uint32_t *dst, uint32_t *src, size_t sz)
 {
@@ -67,4 +68,32 @@ void memset(void *dst, int data, size_t sz)
   dst = (void *)((uintptr_t)dst + k);
 
   memcpyb((uint8_t *)dst, (uint8_t *)data, sz);
+}
+
+uint64_t __STRAPV2_INTERNAL_mem_size_cache = 0;
+uint64_t __STRAPV2_get_installed_mem_size()
+{
+  if (__STRAPV2_INTERNAL_mem_size_cache)
+    return __STRAPV2_INTERNAL_mem_size_cache;
+
+  multiboot_hdr *mbi = __STRAPV2_mboot_get();
+  if (!mbi)
+    return __STRAPV2_INTERNAL_mem_size_cache = -1;
+  
+  size_t mmap_slots = mbi->mmap_len / sizeof(mmap_entry_t);
+  mmap_entry_t *mmap_entries = (mmap_entry_t *)mbi->mmap_addr;
+
+  for (size_t i = 0; i < mmap_slots; i++)
+    if (mmap_entries[i].type == MULTIBOOT_MEMORY_AVAILABLE)
+      __STRAPV2_INTERNAL_mem_size_cache += mmap_entries[i].length;
+
+  return __STRAPV2_INTERNAL_mem_size_cache;
+}
+
+uint32_t __STRAPV2_get_usable_mem_size()
+{
+  uint64_t total_msz = __STRAPV2_get_installed_mem_size();
+  
+  if (total_msz >= UINT32_MAX) return UINT32_MAX-1;
+  return (uint32_t)total_msz;
 }

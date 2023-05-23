@@ -2,6 +2,13 @@
 #include <stdint.h>
 #include <decl.h>
 
+typedef enum multiboot_memory_type
+{
+  MULTIBOOT_MEMORY_AVAILABLE = 1,
+  MULTIBOOT_MEMORY_RESERVED  = 2,
+  MULTIBOOT_MEMORY_INVALID = 0xFFFFFFFF
+} packed__ multiboot_memory_type_t;
+
 typedef struct
 {
   uint32_t flags;
@@ -38,10 +45,8 @@ typedef struct
 typedef struct
 {
   uint32_t size;
-  uint32_t address_low;
-  uint32_t address_high;
-  uint32_t length_low;
-  uint32_t length_high;
+  uint64_t address;
+  uint64_t length;
   uint32_t type;
 } packed__ mmap_entry_t;
 

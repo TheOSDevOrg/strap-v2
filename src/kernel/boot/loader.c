@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <main.h>
 #include <hal/gdt.h>
+#include <memory.h>
 
 __STRAPV2_multiboot_header_loader_t multiboot section__(.multiboot) =
   (__STRAPV2_multiboot_header_loader_t) {
@@ -41,6 +42,11 @@ __STRAPV2_gdt32_entry_t global_desc_table[STRAPV2_MAX_GDT32_ENTRIES];
 
 void _kernel_exec()
 {
+  __STRAPV2_mboot_init(multiboot_response);
+
+  __STRAPV2_MEMORY_REGIONS.allocation_stack = 
+    (uint8_t *)__STRAPV2_get_installed_mem_size() - 1;
+
   __STRAPV2_kernel_prerun(multiboot_response);
   while (__STRAPV2_kernel_run() == 0) ;
 }
@@ -58,22 +64,13 @@ void _start()
   // setup the memory regions
   __STRAPV2_MEMORY_REGIONS.kernel_stack =
     (uint8_t *)kernel_end + STRAPV2_BUFFER_REGION_SZ;
-  __STRAPV2_MEMORY_REGIONS.kernel_heap =
+  __STRAPV2_MEMORY_REGIONS.heap =
     (uint8_t *)__STRAPV2_MEMORY_REGIONS.kernel_stack +
                STRAPV2_KERNEL_STACK_SZ;
-  __STRAPV2_MEMORY_REGIONS.lf_heap =
-    (uint8_t *)__STRAPV2_MEMORY_REGIONS.kernel_heap +
-               STRAPV2_KERNEL_HEAP_SZ;
-  __STRAPV2_MEMORY_REGIONS.common_heap =
-    (uint8_t *)__STRAPV2_MEMORY_REGIONS.lf_heap +
-               STRAPV2_LF_HEAP_SZ;
-  __STRAPV2_MEMORY_REGIONS.end =
-  (uint8_t *)__STRAPV2_MEMORY_REGIONS.common_heap +
-               STRAPV2_COMMON_HEAP_SZ;
 
   __asm__ volatile (
     "movl %0, %%esp"
-    : : "m"(__STRAPV2_MEMORY_REGIONS.kernel_heap)
+    : : "m"(__STRAPV2_MEMORY_REGIONS.heap)
   );
 
   __STRAPV2_gdt32_init_table(global_desc_table);

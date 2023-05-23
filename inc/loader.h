@@ -38,10 +38,8 @@ struct __STRAPV2_multiboot_header_loader
 struct __STRAPV2_memory_regions
 {
   uint8_t *kernel_stack;
-  uint8_t *kernel_heap;
-  uint8_t *common_heap;
-  uint8_t *lf_heap;
-  uintptr_t end;
+  uint8_t *heap;
+  uint8_t *allocation_stack;
 };
 
 #ifndef __cplusplus
