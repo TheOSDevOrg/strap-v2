@@ -73,7 +73,7 @@ int __STRAPV2_INTERNAL_print_unsigned_number(
   return nsz;
 }
 
-int vprintf_std(va_list lst, standard_output *std, char *fmt, ...)
+int vprintf_std(va_list lst, standard_output *std, char *fmt)
 {
   /**
     * @brief this will be used to loop through
@@ -135,6 +135,9 @@ int vprintf_std(va_list lst, standard_output *std, char *fmt, ...)
         __STRAPV2_INTERNAL_digits_uppercase
       );
     break;
+    case 's':
+      tot += vprintf_std(lst, std, va_arg(lst, char *));
+      break;
     case 'u':
       num = va_arg(lst, int);
       if (fmt[++c] == 'd')
