@@ -231,6 +231,17 @@ void __STRAPV2_clear_colors(
   __STRAPV2_clear_std(current_std);
 }
 
+void __STRAPV2_set_fg(console_color_t fg) { current_std->fg = fg; }
+void __STRAPV2_set_bg(console_color_t bg) { current_std->bg = bg; }
+void __STRAPV2_set_colors(console_color_t fg, console_color_t bg)
+{
+  current_std->fg = fg;
+  current_std->bg = bg;
+}
+
+console_color_t __STRAPV2_get_fg() { return current_std->fg; }
+console_color_t __STRAPV2_get_bg() { return current_std->bg; }
+
 void __STRAPV2_render()
 {
   uint16_t offset = current_std->x + (current_std->y*current_std->max_x);

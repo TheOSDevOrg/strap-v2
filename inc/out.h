@@ -136,6 +136,34 @@ void __STRAPV2_clear_colors_std(standard_output *std, console_color_t fg, consol
 void __STRAPV2_clear_colors(console_color_t fg, console_color_t bg);
 
 /**
+ * @brief set the foreground color
+ * @param fg the foreground color
+*/
+void __STRAPV2_set_fg(console_color_t fg);
+/**
+ * @brief set the background color
+ * @param bg the background color
+*/
+void __STRAPV2_set_bg(console_color_t bg);
+/**
+ * @brief set the foreground and background colors
+ * @param fg the foreground color
+ * @param bg the background color
+*/
+void __STRAPV2_set_colors(console_color_t fg, console_color_t bg);
+
+/**
+ * @brief get the foreground color
+ * @return the foreground color
+*/
+console_color_t __STRAPV2_get_fg();
+/**
+ * @brief get the background color
+ * @return the background color
+*/
+console_color_t __STRAPV2_get_bg();
+
+/**
  * @brief render the current std
 */
 void __STRAPV2_render();
