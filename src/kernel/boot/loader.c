@@ -53,7 +53,7 @@ void _kernel_exec()
   __STRAPV2_mboot_init(multiboot_response);
 
   __STRAPV2_MEMORY_REGIONS.allocation_stack = 
-    (uint8_t *)__STRAPV2_get_installed_mem_size() - 1;
+    (uint8_t *)__STRAPV2_get_usable_mem_size() - 1;
 
   __STRAPV2_kernel_prerun(multiboot_response);
   while (__STRAPV2_kernel_run() == 0) ;

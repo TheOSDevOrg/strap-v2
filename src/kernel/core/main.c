@@ -17,7 +17,7 @@ standard_output _stdout = {
   .fg = STRAPV2_CONSOLECOLOR_white,
 };
 
-void __STRAPV2_kernel_prerun(multiboot_hdr *multiboot)
+void __STRAPV2_kernel_prerun(multiboot_hdr *)
 {
   __STRAPV2_init_output_system();
   __STRAPV2_switch_std(&_stdout);
@@ -28,8 +28,8 @@ void __STRAPV2_kernel_prerun(multiboot_hdr *multiboot)
 }
 int __STRAPV2_kernel_run()
 {
-  uint32_t installed = __STRAPV2_get_installed_mem_size() / 1024 / 1024;
-  uint32_t usable = __STRAPV2_get_usable_mem_size() / 1024 / 1024;
+  //uint32_t installed = __STRAPV2_get_installed_mem_size() / 1024 / 1024;
+  //uint32_t usable = __STRAPV2_get_usable_mem_size() / 1024 / 1024;
 
   __STRAPV2_print("Welcome to " KERN_NAME " " KERN_VER "\n");
   __STRAPV2_print("From commit " KERN_COMMIT_ID "\n");

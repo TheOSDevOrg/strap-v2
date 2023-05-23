@@ -129,8 +129,6 @@ alloc_entry_t __STRAPV2_heap_alloc(
 }
 void __STRAPV2_heap_free(heap_t *heap, alloc_entry_t entry)
 {
-  size_t test = __STRAPV2_INTERNAL_heap_find_entry_index(heap, entry);
-
   __STRAPV2_INTERNAL_heap_delete_entry(
     heap,
     __STRAPV2_INTERNAL_heap_find_entry_index(heap, entry)
@@ -138,6 +136,9 @@ void __STRAPV2_heap_free(heap_t *heap, alloc_entry_t entry)
 }
 alloc_entry_t __STRAPV2_heap_get_alloc_info(heap_t *heap, uintptr_t addr)
 {
-  alloc_entry_t entry = __STRAPV2_INTERNAL_heap_find_entry_from_address(heap, addr);
+  alloc_entry_t entry = __STRAPV2_INTERNAL_heap_find_entry_from_address(
+    heap,
+    addr
+  );
   return entry;
 }

@@ -76,8 +76,8 @@ heap_t __STRAPV2_heap;
 void __STRAPV2_memorymgr_init()
 {
   __STRAPV2_heap = __STRAPV2_heap_create(
-    __STRAPV2_MEMORY_REGIONS.heap,
-    __STRAPV2_MEMORY_REGIONS.allocation_stack
+    (uintptr_t)__STRAPV2_MEMORY_REGIONS.heap,
+    (uintptr_t)__STRAPV2_MEMORY_REGIONS.allocation_stack
   );
 }
 
@@ -101,7 +101,7 @@ void free(void *ptr)
     &__STRAPV2_heap,
     __STRAPV2_heap_get_alloc_info(
       &__STRAPV2_heap,
-      ptr - __STRAPV2_heap.base
+      (uintptr_t)ptr - __STRAPV2_heap.base
     )
   );
 }
@@ -109,7 +109,7 @@ size_t countof(void *ptr)
 {
   alloc_entry_t entry = __STRAPV2_heap_get_alloc_info(
     &__STRAPV2_heap, 
-    ptr - __STRAPV2_heap.base
+    (uintptr_t)ptr - __STRAPV2_heap.base
   );
   return entry.offset_end - entry.offset_start;
 }
@@ -138,6 +138,7 @@ uint32_t __STRAPV2_get_usable_mem_size()
 {
   uint64_t total_msz = __STRAPV2_get_installed_mem_size();
   
-  if (total_msz >= UINT32_MAX) return UINT32_MAX-1;
+  if (total_msz > UINT32_MAX)
+    return UINT32_MAX - 5*1000;
   return (uint32_t)total_msz;
 }

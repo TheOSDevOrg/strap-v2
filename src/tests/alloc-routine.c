@@ -12,6 +12,11 @@ bool __STRAPV2_TEST_INTERNAL_alloc_routine_0()
   free(test2);
 
   void *test4 = malloc(15);
+
+  free(test4);
+  free(test3);
+  free(test1);
+
   return test4 == test2;
 }
 bool __STRAPV2_TEST_alloc_routine(int n)

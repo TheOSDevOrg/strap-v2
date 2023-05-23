@@ -42,7 +42,7 @@ __STRAPV2_gdt32_ptr_t __STRAPV2_gdt32_create_gdtr(
 )
 {
   return (__STRAPV2_gdt32_ptr_t) {
-    .table = table,
+    .table = (uintptr_t)table,
     .size = (entries * 8) - 1
   };
 }

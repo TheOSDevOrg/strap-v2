@@ -100,7 +100,7 @@ $(OBJ_DIR)/%.asm.o: $(SRC_DIR)/%.asm
 	@echo "NASM: $< -> $@"
 
 run:
-	@qemu-system-i386 -cdrom $(ISO_FILE) -serial stdio -vga std -no-reboot -no-shutdown -m 10G
+	@qemu-system-i386 -cdrom $(ISO_FILE) -serial stdio -vga std -no-reboot -no-shutdown -m 5G
 run-kvm:
 	@qemu-system-i386 -cdrom $(ISO_FILE) -serial stdio -vga std -no-reboot -no-shutdown -m 1G -enable-kvm -cpu host
 #run-bochs:
