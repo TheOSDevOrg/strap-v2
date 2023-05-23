@@ -4,7 +4,7 @@ OUTPUT_ARCH(i386:i386)
 ENTRY(_start)
 
 SECTIONS {
-  . = 1M;
+  . = 0x100000;
   kernel_start = .;
 
   .multiboot BLOCK(4K) : ALIGN(4K) {

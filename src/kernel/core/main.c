@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <hal/gdt.h>
 #include <memory.h>
+#include <loader.h>
+#include <tests.h>
 
 console_char_t _videobuffer[80*25];
 standard_output _stdout = {
@@ -19,6 +21,7 @@ void __STRAPV2_kernel_prerun(multiboot_hdr *multiboot)
 {
   __STRAPV2_init_output_system();
   __STRAPV2_switch_std(&_stdout);
+  __STRAPV2_memorymgr_init();
   __STRAPV2_clear();
   __STRAPV2_print("info:  output system ready!\n");
   __STRAPV2_print("info:  multiboot data ready!\n");
@@ -30,12 +33,8 @@ int __STRAPV2_kernel_run()
 
   __STRAPV2_print("Welcome to " KERN_NAME " " KERN_VER "\n");
   __STRAPV2_print("From commit " KERN_COMMIT_ID "\n");
-  printf(
-    "Installed memory: %ud MB (usable %ud MB)\n",
-    installed,
-    usable
-  );
-  //__STRAPV2_print("sample_prompt strap ? \n");
+
+  __STRAPV2_TEST_alloc_routine(0);
 
   __STRAPV2_render();
   while(1) ;

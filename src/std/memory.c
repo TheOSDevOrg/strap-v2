@@ -1,6 +1,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <multiboot.h>
+#include <heap.h>
+#include <loader.h>
 
 void memcpyd(uint32_t *dst, uint32_t *src, size_t sz)
 {
@@ -68,6 +70,48 @@ void memset(void *dst, int data, size_t sz)
   dst = (void *)((uintptr_t)dst + k);
 
   memcpyb((uint8_t *)dst, (uint8_t *)data, sz);
+}
+
+heap_t __STRAPV2_heap;
+void __STRAPV2_memorymgr_init()
+{
+  __STRAPV2_heap = __STRAPV2_heap_create(
+    __STRAPV2_MEMORY_REGIONS.heap,
+    __STRAPV2_MEMORY_REGIONS.allocation_stack
+  );
+}
+
+void *malloc(size_t sz)
+{
+  if (sz == 0 || sz < sizeof(alloc_entry_t))
+    return NULL;
+
+  alloc_entry_t entry = __STRAPV2_heap_alloc(
+    &__STRAPV2_heap,
+    sz,
+    HEAP_ALLOC_TYPE_DIRECT,
+    HEAP_ALLOC_DATA_TYPE_OTHER
+  );
+
+  return (void *)(entry.offset_start + __STRAPV2_heap.base);
+}
+void free(void *ptr)
+{
+  __STRAPV2_heap_free(
+    &__STRAPV2_heap,
+    __STRAPV2_heap_get_alloc_info(
+      &__STRAPV2_heap,
+      ptr - __STRAPV2_heap.base
+    )
+  );
+}
+size_t countof(void *ptr)
+{
+  alloc_entry_t entry = __STRAPV2_heap_get_alloc_info(
+    &__STRAPV2_heap, 
+    ptr - __STRAPV2_heap.base
+  );
+  return entry.offset_end - entry.offset_start;
 }
 
 uint64_t __STRAPV2_INTERNAL_mem_size_cache = 0;

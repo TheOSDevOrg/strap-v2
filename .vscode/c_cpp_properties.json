@@ -10,14 +10,10 @@
             "cppStandard": "c++17",
             "intelliSenseMode": "gcc-x86",
             "configurationProvider": "ms-vscode.makefile-tools",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/lib",
-                    "${workspaceFolder}/inc"
-                ]
-            },
             "includePath": [
-                "${default}"
+                "${default}",
+                "${workspaceFolder}/inc",
+                "${workspaceFolder}/lib"
             ]
         }
     ],
