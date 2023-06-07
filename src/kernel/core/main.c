@@ -19,8 +19,7 @@ standard_output _stdout = {
 
 void __STRAPV2_kernel_prerun(multiboot_hdr *)
 {
-  __STRAPV2_init_output_system();
-  __STRAPV2_switch_std(&_stdout);
+  __STRAPV2_init_output_system(&_stdout);
   __STRAPV2_memorymgr_init();
   __STRAPV2_clear();
   __STRAPV2_print("info:  output system ready!\n");

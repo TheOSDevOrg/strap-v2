@@ -13,7 +13,7 @@ NASM=nasm
 AS=i686-elf-as
 
 NAME=strap-v2
-VER	=0.070623.1.1
+VER	=0.070623.2
 COMMIT=$(shell git rev-parse HEAD)
 
 ISO_FILE=out/$(NAME).iso

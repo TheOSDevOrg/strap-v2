@@ -171,4 +171,4 @@ void __STRAPV2_render();
 /**
  * @brief initialize the output system
 */
-void __STRAPV2_init_output_system();
+void __STRAPV2_init_output_system(standard_output *std);

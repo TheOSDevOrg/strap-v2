@@ -271,7 +271,7 @@ void __STRAPV2_render()
   );
 }
 
-void __STRAPV2_init_output_system()
+void __STRAPV2_init_output_system(standard_output *std)
 {
   __STRAPV2_port_write(
     __STRAPV2_INTERNAL_out_cmd_port,
@@ -299,4 +299,6 @@ void __STRAPV2_init_output_system()
     __STRAPV2_INTERNAL_out_dat_port,
     0x0e
   );
+
+  __STRAPV2_switch_std(std);
 }
