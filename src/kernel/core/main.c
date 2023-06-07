@@ -28,11 +28,8 @@ void __STRAPV2_kernel_prerun(multiboot_hdr *)
 }
 int __STRAPV2_kernel_run()
 {
-  //uint32_t installed = __STRAPV2_get_installed_mem_size() / 1024 / 1024;
-  //uint32_t usable = __STRAPV2_get_usable_mem_size() / 1024 / 1024;
-
-  __STRAPV2_print("Welcome to " KERN_NAME " " KERN_VER "\n");
-  __STRAPV2_print("From commit " KERN_COMMIT_ID "\n");
+  printf("Welcome to " KERN_NAME " " KERN_VER "\n");
+  printf("From commit " KERN_COMMIT_ID "\n");
 
   __STRAPV2_TEST_alloc_routine(0);
 

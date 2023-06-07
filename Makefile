@@ -13,7 +13,7 @@ NASM=nasm
 AS=i686-elf-as
 
 NAME=strap-v2
-VER	=0.230523.4
+VER	=0.070623.1.1
 COMMIT=$(shell git rev-parse HEAD)
 
 ISO_FILE=out/$(NAME).iso
@@ -100,7 +100,7 @@ $(OBJ_DIR)/%.asm.o: $(SRC_DIR)/%.asm
 	@echo "NASM: $< -> $@"
 
 run:
-	@qemu-system-i386 -cdrom $(ISO_FILE) -serial stdio -vga std -no-reboot -no-shutdown -m 5G
+	@qemu-system-i386 -cdrom $(ISO_FILE) -serial stdio -vga std -no-reboot -no-shutdown -m 2G
 run-kvm:
 	@qemu-system-i386 -cdrom $(ISO_FILE) -serial stdio -vga std -no-reboot -no-shutdown -m 1G -enable-kvm -cpu host
 #run-bochs:

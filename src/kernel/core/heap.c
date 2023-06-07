@@ -142,3 +142,52 @@ alloc_entry_t __STRAPV2_heap_get_alloc_info(heap_t *heap, uintptr_t addr)
   );
   return entry;
 }
+
+char *__STRAPV2_INTERNAL_convert_type(alloc_type_t type)
+{
+  switch (type)
+  {
+    case HEAP_ALLOC_TYPE_DIRECT:
+      return "direct";
+    case HEAP_ALLOC_TYPE_NEW:
+      return "new operator";
+    case HEAP_ALLOC_TYPE_NEW_ARRAY:
+      return "new[] operator";
+    default:
+      return "unknown";
+  }
+}
+char *__STRAPV2_INTERNAL_convert_data_type(alloc_data_type_t data_type)
+{
+  switch (data_type)
+  {
+    case HEAP_ALLOC_DATA_TYPE_OTHER:
+      return "other";
+    case HEAP_ALLOC_DATA_TYPE_INTEGER:
+      return "integer";
+    case HEAP_ALLOC_DATA_TYPE_STRING:
+      return "string";
+    case HEAP_ALLOC_DATA_TYPE_ARRAY:
+      return "array";
+    default:
+      return "unknown";
+  }
+}
+
+void __STRAPV2_heap_print_alloc_stack(heap_t *heap)
+{
+  for (int32_t i = heap->alloc_entries_count-1; i >= 0; i--) printf(
+    "Entry n. %ud:\n"
+    "   start: 0x%ux\n"
+    "   end:   0x%ux\n"
+    "   type:  %s\n"
+    "   data:  %s\n"
+    "   size:  %d bytes\n",
+    i,
+    heap->alloc_stack_base[i].offset_start,
+    heap->alloc_stack_base[i].offset_end,
+    __STRAPV2_INTERNAL_convert_type(heap->alloc_stack_base[i].type),
+    __STRAPV2_INTERNAL_convert_data_type(heap->alloc_stack_base[i].data_type),
+    heap->alloc_stack_base[i].offset_end - heap->alloc_stack_base[i].offset_start
+  );
+}

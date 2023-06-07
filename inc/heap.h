@@ -46,3 +46,5 @@ __cdecl alloc_entry_t __STRAPV2_heap_get_alloc_info(
   heap_t *heap,
   uintptr_t addr
 );
+
+__cdecl void __STRAPV2_heap_print_alloc_stack(heap_t *heap);

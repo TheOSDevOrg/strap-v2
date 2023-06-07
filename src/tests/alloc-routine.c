@@ -6,12 +6,13 @@
 bool __STRAPV2_TEST_INTERNAL_alloc_routine_0()
 {
   void *test1 = malloc(15);
-  void *test2 = malloc(15);
+  void *test2 = malloc(30);
   void *test3 = malloc(15);
 
   free(test2);
 
   void *test4 = malloc(15);
+  __STRAPV2_heap_print_alloc_stack(&__STRAPV2_heap);
 
   free(test4);
   free(test3);
@@ -32,6 +33,7 @@ bool __STRAPV2_TEST_alloc_routine(int n)
   {
     case 0:
       printf("alloc routine 0\n");
+      __STRAPV2_set_fg(STRAPV2_CONSOLECOLOR_white);
       result = __STRAPV2_TEST_INTERNAL_alloc_routine_0();
       break;
     default:
