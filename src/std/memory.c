@@ -14,6 +14,14 @@ void memsetd(uint32_t *dst, uint32_t data, size_t sz)
   for (size_t i = 0; i < sz; i++)
     dst[i] = data;
 }
+int memcmpd(uint32_t *first, uint32_t *second, size_t sz)
+{
+  size_t i;
+
+  for (i = sz - 1; i > 0; i--) if (first[i] != second[i])
+    break;
+  return first[i] - second[i];
+}
 
 void memcpyw(uint16_t *dst, uint16_t *src, size_t sz)
 {
@@ -24,6 +32,14 @@ void memsetw(uint16_t *dst, uint16_t data, size_t sz)
 {
   for (size_t i = 0; i < sz; i++)
     dst[i] = data;
+}
+int memcmpw(uint16_t *first, uint16_t *second, size_t sz)
+{
+  size_t i;
+
+  for (i = sz - 1; i > 0; i--) if (first[i] != second[i])
+    break;
+  return first[i] - second[i];
 }
 
 void memcpyb(uint8_t *dst, uint8_t *src, size_t sz)
@@ -36,6 +52,14 @@ void memsetb(uint8_t *dst, uint8_t data, size_t sz)
   for (size_t i = 0; i < sz; i++)
     dst[i] = data;
 }
+int memcmpb(uint8_t *first, uint8_t *second, size_t sz)
+{
+  size_t i;
+
+  for (i = sz - 1; i > 0; i--) if (first[i] != second[i])
+    break;
+  return first[i] - second[i];
+}
 
 void memcpy(void *dst, void *src, size_t sz)
 {
@@ -44,12 +68,14 @@ void memcpy(void *dst, void *src, size_t sz)
   s = sz / 4;
   sz -= (k = s * 4);
   memcpyd((uint32_t *)dst, (uint32_t *)src, s);
+  if (sz == 0) return;
   dst = (void *)((uintptr_t)dst + k);
   src = (void *)((uintptr_t)src + k);
 
   s = sz / 2;
   sz -= (k = s * 2);
   memcpyw((uint16_t *)dst, (uint16_t *)src, s);
+  if (sz == 0) return;
   dst = (void *)((uintptr_t)dst + k);
   src = (void *)((uintptr_t)src + k);
 
@@ -62,14 +88,37 @@ void memset(void *dst, int data, size_t sz)
   s = sz / 4;
   sz -= (k = s * 4);
   memsetd((uint32_t *)dst, (uint32_t)data, s);
+  if (sz == 0) return;
   dst = (void *)((uintptr_t)dst + k);
 
   s = sz / 2;
   sz -= (k = s * 2);
   memcpyw((uint16_t *)dst, (uint16_t *)data, s);
+  if (sz == 0) return;
   dst = (void *)((uintptr_t)dst + k);
 
   memcpyb((uint8_t *)dst, (uint8_t *)data, sz);
+}
+int memcmp(void *first, void *second, size_t sz)
+{
+  int s, k;
+
+  s = sz / 4;
+  sz -= (k = s * 4);
+  int r = memcmpd((uint32_t *)first, (uint32_t *)second, s);
+  if (r != 0 || sz == 0) return ((char *)&r)[3];
+  first = (void *)((uintptr_t)first + k);
+  second = (void *)((uintptr_t)second + k);
+
+  s = sz / 2;
+  sz -= (k = s * 2);
+  r = memcmpw((uint16_t *)first, (uint16_t *)second, s);
+  if (r != 0 || sz == 0) return ((char *)&r)[1];
+  first = (void *)((uintptr_t)first + k);
+  second = (void *)((uintptr_t)second + k);
+
+  r = memcmpb((uint8_t *)first, (uint8_t *)second, sz);
+  return r;
 }
 
 heap_t __STRAPV2_heap;

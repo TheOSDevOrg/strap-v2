@@ -197,3 +197,7 @@ int printf(char *fmt, ...)
   va_end(lst);
   return result;
 }
+int vprintf(char *fmt, va_list lst)
+{
+  return vprintf_std(lst, current_std, fmt);
+}

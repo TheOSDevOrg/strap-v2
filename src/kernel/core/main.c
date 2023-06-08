@@ -30,7 +30,10 @@ int __STRAPV2_kernel_run()
   printf("Welcome to " KERN_NAME " " KERN_VER "\n");
   printf("From commit " KERN_COMMIT_ID "\n");
 
-  __STRAPV2_TEST_alloc_routine(0);
+  //__STRAPV2_TEST_alloc_routine(0);
+  __STRAPV2_TEST_memcmp(0);
+  __STRAPV2_TEST_memcmp(1);
+  __STRAPV2_TEST_memcmp(2);
 
   __STRAPV2_render();
   while(1) ;
