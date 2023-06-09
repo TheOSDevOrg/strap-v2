@@ -13,7 +13,8 @@
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/inc",
-                "${workspaceFolder}/lib"
+                "${workspaceFolder}/lib",
+                "${workspaceFolder}/../Tabos.VM/Include"
             ]
         }
     ],

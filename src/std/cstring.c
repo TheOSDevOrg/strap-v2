@@ -5,7 +5,7 @@ size_t strlen(char str[])
 {
   size_t sz = 0;
   while (str[sz++]) ;
-  return sz;
+  return sz-1;
 }
 int strcmp(char first[], char second[])
 {

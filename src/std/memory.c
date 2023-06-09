@@ -103,6 +103,7 @@ int memcmp(void *first, void *second, size_t sz)
 {
   int s, k;
 
+  if (sz < 4) goto word;
   s = sz / 4;
   sz -= (k = s * 4);
   int r = memcmpd((uint32_t *)first, (uint32_t *)second, s);
@@ -110,6 +111,8 @@ int memcmp(void *first, void *second, size_t sz)
   first = (void *)((uintptr_t)first + k);
   second = (void *)((uintptr_t)second + k);
 
+  word:
+  if (sz < 2) goto byte;
   s = sz / 2;
   sz -= (k = s * 2);
   r = memcmpw((uint16_t *)first, (uint16_t *)second, s);
@@ -117,6 +120,7 @@ int memcmp(void *first, void *second, size_t sz)
   first = (void *)((uintptr_t)first + k);
   second = (void *)((uintptr_t)second + k);
 
+  byte:
   r = memcmpb((uint8_t *)first, (uint8_t *)second, sz);
   return r;
 }
