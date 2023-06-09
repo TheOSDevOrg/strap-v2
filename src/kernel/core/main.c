@@ -5,6 +5,7 @@
 #include <memory.h>
 #include <loader.h>
 #include <tests.h>
+#include <TabosVM.h>
 
 console_char_t _videobuffer[80*25];
 standard_output _stdout = {
@@ -24,6 +25,8 @@ void __STRAPV2_kernel_prerun(multiboot_hdr *)
   __STRAPV2_clear();
   __STRAPV2_print("info:  output system ready!\n");
   __STRAPV2_print("info:  multiboot data ready!\n");
+  TVM_init();
+  __STRAPV2_print("info:  Tabos Virtual Machine initialized!\n");
 }
 int __STRAPV2_kernel_run()
 {
@@ -31,11 +34,15 @@ int __STRAPV2_kernel_run()
   printf("From commit " KERN_COMMIT_ID "\n");
 
   //__STRAPV2_TEST_alloc_routine(0);
-  __STRAPV2_TEST_memcmp(0);
-  __STRAPV2_TEST_memcmp(1);
-  __STRAPV2_TEST_memcmp(2);
+  //__STRAPV2_TEST_memcmp(0);
+  //__STRAPV2_TEST_memcmp(1);
+  //__STRAPV2_TEST_memcmp(2);
 
+  __STRAPV2_TEST_VM_flow();
+  __STRAPV2_heap_print_alloc_stack(&__STRAPV2_heap);
+  __STRAPV2_TEST_VM_types();
   __STRAPV2_render();
+
   while(1) ;
   return 0;
 }
