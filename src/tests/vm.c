@@ -1,5 +1,6 @@
 #include <tests.h>
 #include <stdio.h>
+#include <memory.h>
 #include <TabosVM.h>
 #include <Typecheck/Primitives/math/integer/i8.h>
 
@@ -38,6 +39,7 @@ void __STRAPV2_TEST_VM_flow() {
   TVM_engine_processor_t proc = TVM_build(mod, code);
 
   TVM_exec(&proc, false);
+  TVM_dispose(&proc);
 }
 void __STRAPV2_TEST_VM_types() {
   TVM_module_t mod = TVM_modload(validation_test);
@@ -47,5 +49,6 @@ void __STRAPV2_TEST_VM_types() {
   TVM_register_type(&proc, "sys.i8", &i8);
 
   TVM_type_t type = TVM_primitive_i8();
-  printf("%s\n", type.check(TVM_resolve_typeexpr(&proc, "sys.i8"), NULL) ? "true" : "false");
+  //printf("%s\n", type.check(TVM_resolve_typeexpr(&proc, "sys.i8"), NULL) ? "true" : "false");
+  TVM_dispose(&proc);
 }
