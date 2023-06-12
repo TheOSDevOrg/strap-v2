@@ -16,18 +16,20 @@ const char validation_test[] =
     "EXE"
     "\xde"
     "\x00\x00\x00\x00" "main\0" "void\0"
-    "\x09\x00\x00\x00" "test\0" "void\0"
+    "\x0b\x00\x00\x00" "test\0" "void\0"
 
     
     "BYC"
 //   callms     test
     "\x01\x00" "test\0"
 //   debug
-    "\x05\x00"
-//   debug
-    "\x05\x00"
+    "\x00\x00"
 //   end
     "\xff\xff"
+//   debug
+    "\x05\x00"
+//   return
+    "\x06\x00"
     
     "EOE"
     "EOF";
@@ -38,7 +40,7 @@ void __STRAPV2_TEST_VM_flow() {
 
   TVM_engine_processor_t proc = TVM_build(mod, code);
 
-  TVM_exec(&proc, false);
+  TVM_exec(&proc);
   TVM_dispose(&proc);
 }
 void __STRAPV2_TEST_VM_types() {
@@ -49,6 +51,6 @@ void __STRAPV2_TEST_VM_types() {
   TVM_register_type(&proc, "sys.i8", &i8);
 
   TVM_type_t type = TVM_primitive_i8();
-  //printf("%s\n", type.check(TVM_resolve_typeexpr(&proc, "sys.i8"), NULL) ? "true" : "false");
+  printf("%s\n", type.check(TVM_resolve_typeexpr(&proc, "sys.i8"), NULL) ? "true" : "false");
   TVM_dispose(&proc);
 }
