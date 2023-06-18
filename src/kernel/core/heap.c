@@ -3,6 +3,7 @@
 
 heap_t __STRAPV2_heap_create(uintptr_t base, uintptr_t alloc_stack_base)
 {
+	// initialize the heap
   return (heap_t) {
     .base = base,
     .alloc_entries_count = 0,
@@ -13,26 +14,30 @@ heap_t __STRAPV2_heap_create(uintptr_t base, uintptr_t alloc_stack_base)
 alloc_entry_t __STRAPV2_INTERNAL_heap_push_entry(
   heap_t *heap,
   alloc_entry_t entry
-)
-{
+) {
   if (heap->alloc_entries_count != 0)
   {
     alloc_entry_t prev_entry = *(heap->alloc_stack_base);
     entry.offset_start = prev_entry.offset_end;
     entry.offset_end += entry.offset_start;
   }
-  *(--heap->alloc_stack_base) = entry;
+  
+	// push entry into stack
+	*(--heap->alloc_stack_base) = entry;
   heap->alloc_entries_count++;
-  return entry;
+  
+	return entry;
 }
 alloc_entry_t __STRAPV2_INTERNAL_heap_insert_entry(
   heap_t *heap,
   alloc_entry_t entry,
   uintptr_t index
-)
-{
-  heap->alloc_stack_base--;
-  for (uintptr_t i = 0; i < index; i++)
+) {
+  // increase stack space by 1 entry
+	heap->alloc_stack_base--;
+  
+	// make space at given index
+	for (uintptr_t i = 0; i < index; i++)
     heap->alloc_stack_base[i] = heap->alloc_stack_base[i + 1];
   
   if (index != 0)
@@ -40,45 +45,50 @@ alloc_entry_t __STRAPV2_INTERNAL_heap_insert_entry(
     entry.offset_start = heap->alloc_stack_base[index + 1].offset_end;
     entry.offset_end += entry.offset_start;
   }
+
+	// set new entry
   heap->alloc_stack_base[index] = entry;
   heap->alloc_entries_count++;
-  return entry;
+  
+	return entry;
 }
 bool __STRAPV2_INTERNAL_heap_delete_entry(
   heap_t *heap,
   size_t index
-)
-{
+) {
   if (index >= heap->alloc_entries_count) return false;
-  for (size_t i = index; i > 0; i--)
+  
+	// overwrite entry
+	for (size_t i = index; i > 0; i--)
     heap->alloc_stack_base[i] = heap->alloc_stack_base[i - 1];
-  heap->alloc_stack_base++;
+  
+	// reduce stack space by 1 entry
+	heap->alloc_stack_base++;
   heap->alloc_entries_count--;
-  return true;
+  
+	return true;
 }
 size_t __STRAPV2_INTERNAL_heap_find_entry_index(
   heap_t *heap,
   alloc_entry_t entry
-)
-{
-  for (uintptr_t i = 0; i < heap->alloc_entries_count; i++)
-    if (
-      heap->alloc_stack_base[i].offset_start == entry.offset_start &&
-      heap->alloc_stack_base[i].offset_end == entry.offset_end
-    ) return i;
-  return -1;
+) {
+  for (uintptr_t i = 0; i < heap->alloc_entries_count; i++) if (
+    heap->alloc_stack_base[i].offset_start == entry.offset_start &&
+    heap->alloc_stack_base[i].offset_end == entry.offset_end
+  ) return i;
+  
+	return -1;
 }
 alloc_entry_t __STRAPV2_INTERNAL_heap_find_entry_from_address(
   heap_t *heap,
   uintptr_t address
-)
-{
-  for (uintptr_t i = 0; i < heap->alloc_entries_count; i++)
-    if (
-      heap->alloc_stack_base[i].offset_start <= address &&
-      heap->alloc_stack_base[i].offset_end > address
-    ) return heap->alloc_stack_base[i];
-  return (alloc_entry_t) {
+) {
+  for (uintptr_t i = 0; i < heap->alloc_entries_count; i++) if (
+    heap->alloc_stack_base[i].offset_start <= address &&
+    heap->alloc_stack_base[i].offset_end > address
+  ) return heap->alloc_stack_base[i];
+  
+	return (alloc_entry_t) {
     .offset_end = 0xFFFFFFFF
   };
 }

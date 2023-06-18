@@ -35,7 +35,8 @@ int __STRAPV2_kernel_run()
 
   __STRAPV2_TEST_VM_flow();
   __STRAPV2_TEST_VM_types();
-  __STRAPV2_heap_print_alloc_stack(&__STRAPV2_heap);
+	__STRAPV2_TEST_VM_count();
+	__STRAPV2_heap_print_alloc_stack(&__STRAPV2_heap);
   __STRAPV2_render();
 
   while(1) ;

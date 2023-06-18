@@ -42,7 +42,7 @@ void __STRAPV2_TEST_VM_flow() {
 
   TVM_exec(&proc);
   TVM_dispose(&proc);
-}
+};
 void __STRAPV2_TEST_VM_types() {
   TVM_module_t mod = TVM_modload(validation_test);
   TVM_engine_processor_t proc = TVM_build(mod, TVM_read(mod));
@@ -53,4 +53,10 @@ void __STRAPV2_TEST_VM_types() {
   TVM_type_t type = TVM_primitive_i8();
   printf("%s\n", type.check(TVM_resolve_typeexpr(&proc, "sys.i8"), NULL) ? "true" : "false");
   TVM_dispose(&proc);
+}
+void __STRAPV2_TEST_VM_count() {
+	TVM_module_t mod = TVM_modload(validation_test);
+
+	size_t l = TVM_get_variables_num(mod);
+	printf("%d\n", l);
 }
